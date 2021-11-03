@@ -1,4 +1,4 @@
-#if ENABLE_INPUT_SYSTEM 
+#if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
 
@@ -114,6 +114,7 @@ namespace UnityTemplateProjects
             verticalMovementAction.Enable();
             boostFactorAction.Enable();
         }
+
 #endif
 
         void OnEnable()
@@ -161,14 +162,14 @@ namespace UnityTemplateProjects
 
         void Update()
         {
-            // Exit Sample  
+            // Exit Sample
 
             if (IsEscapePressed())
             {
                 Application.Quit();
-#if UNITY_EDITOR
+                #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-#endif
+                #endif
             }
 
             // Hide and lock cursor when right mouse button pressed
@@ -242,19 +243,18 @@ namespace UnityTemplateProjects
         bool IsBoostPressed()
         {
 #if ENABLE_INPUT_SYSTEM
-            bool boost = Keyboard.current != null ? Keyboard.current.leftShiftKey.isPressed : false; 
+            bool boost = Keyboard.current != null ? Keyboard.current.leftShiftKey.isPressed : false;
             boost |= Gamepad.current != null ? Gamepad.current.xButton.isPressed : false;
             return boost;
 #else
             return Input.GetKey(KeyCode.LeftShift);
 #endif
-
         }
 
         bool IsEscapePressed()
         {
 #if ENABLE_INPUT_SYSTEM
-            return Keyboard.current != null ? Keyboard.current.escapeKey.isPressed : false; 
+            return Keyboard.current != null ? Keyboard.current.escapeKey.isPressed : false;
 #else
             return Input.GetKey(KeyCode.Escape);
 #endif
@@ -288,7 +288,5 @@ namespace UnityTemplateProjects
             return Input.GetMouseButtonUp(1);
 #endif
         }
-
     }
-
 }
