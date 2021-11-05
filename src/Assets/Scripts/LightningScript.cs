@@ -2,26 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomWalkThunderGenerator : MonoBehaviour
+public class LightningScript : MonoBehaviour
 {
+    List<Vector3> posList = new List<Vector3>();
     private Mesh mesh;
     float resetTime;
+    float timerMod;
+    float modChecker;
+    float speed;
+    int portion;
 
     // Start is called before the first frame update
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-        resetTime = 0.0f;
+        resetTime = 0.0f; 
     }
 
     // Update is called once per frame
     void Update()
     {
+        modChecker = resetTime % speed;
         resetTime -= Time.deltaTime;
+
         if (resetTime < 0f)
         {
             resetTime = Random.Range(1f, 3f);
+            timerMod = resetTime;
+            posList.Clear();
             generateThunder();
+            speed = timerMod / posList.Count;
+            portion = 0;
+        }
+
+        if (modChecker < resetTime % speed)
+        {
+            portion++;
+            generateMesh();
         }
     }
 
@@ -31,8 +48,6 @@ public class RandomWalkThunderGenerator : MonoBehaviour
 
         Vector3 dir = new Vector3(0f, -1f, 0f);
         dir.Normalize();
-
-        List<Vector3> posList = new List<Vector3>();
 
         posList.Add(pos);
 
@@ -53,60 +68,64 @@ public class RandomWalkThunderGenerator : MonoBehaviour
             }
         }
 
-        generateMesh(posList);
-
         gameObject.transform.position = new Vector3(
             Random.Range(-300f, +300f),
             0f,
             Random.Range(-300f, +300f)
             );
     }
-
-    void generateMesh(List<Vector3> a_pos)
+    
+    void generateMesh()
     {
-        if (a_pos.Count < 2)
+        if (posList.Count < 2)
         {
             return;
         }
 
         mesh.Clear();
 
-        int vertex_Count = 2 * a_pos.Count;
+        int vertex_Count = 2 * portion;
 
         Vector3[] vertices = new Vector3[vertex_Count];
         int vtx = 0;
-        for (int i = 0; i < a_pos.Count; i++)
+        for (int i = 0; i < portion; i++)
         {
             Vector3 dir;
             if (i == 0)
             {
-                dir = a_pos[1] - a_pos[0];
+                dir = posList[1] - posList[0];
             }
-            else if (i == a_pos.Count - 1)
+            else if (i == portion - 1)
             {
-                dir = a_pos[a_pos.Count - 1] - a_pos[a_pos.Count - 2];
+                dir = posList[portion - 1] - posList[portion - 2];
             }
             else
             {
-                dir = a_pos[i + 1] - a_pos[i - 1];
+                dir = posList[i + 1] - posList[i - 1];
             }
             dir.Normalize();
 
             const float THUNDER_WIDTH = 5f;
             Vector3 t = new Vector3(-dir.y, dir.x, 0f) * THUNDER_WIDTH;
 
-            vertices[vtx + 0] = a_pos[i] - t;
-            vertices[vtx + 1] = a_pos[i] + t;
+            vertices[vtx + 0] = posList[i] - t;
+            vertices[vtx + 1] = posList[i] + t;
             vtx += 2;
         }
 
+        Color baseColor = Color.red;
         Color[] colors = new Color[vertex_Count];
+        float colorMod = 0.75f / posList.Count;
         for (int i = 0; i < vertex_Count; i++)
         {
-            colors[i] = Color.white;
+            if (i % 2 == 0)
+            {
+                baseColor += new Color(0, colorMod, 0);
+            }
+            colors[i] = baseColor;      
         }
 
-        int triangle_Count = 6 * (a_pos.Count - 1);
+        int triangle_Count = 6 * (portion - 1);
         int[] triangles = new int[triangle_Count];
         int idx = 0;
         vtx = 0;
