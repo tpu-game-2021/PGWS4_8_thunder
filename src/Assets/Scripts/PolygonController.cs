@@ -10,6 +10,22 @@ public class PolygonController : MonoBehaviour
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
+
+        Vector3[] vectors ={
+            new Vector3(1.0f, 0.0f, 0.0f),
+            new Vector3(0.0f, 1.0f, 0.0f),
+            new Vector3(0.0f, 0.0f, 1.0f),
+        };
+        Color[] colors = { Color.red, Color.green, Color.blue };
+        int[] triangles = { 0, 1, 2 };
+
+        mesh.Clear();
+
+        mesh.vertices = vectors;
+        mesh.colors = colors;
+        mesh.triangles = triangles;
+
+        mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
     }
 }
-
