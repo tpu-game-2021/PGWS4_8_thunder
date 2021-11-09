@@ -7,10 +7,10 @@
 ![結果画像2](result2.gif)
 
 ## 自分なりにかっこいいシーン
-![結果画像](result.gif)
+![result](https://user-images.githubusercontent.com/55951546/140960869-1d6b093e-510b-47fb-9515-56b820438077.gif)
 
 # 自分なりに変更した点
--
+-背景は黒でなくして7色の雷を複数落としてみた。
 -
 -
 
