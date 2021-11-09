@@ -11,7 +11,6 @@ public class RandomWalkThunderGenerator : MonoBehaviour
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-
         resetTime = 0.0f;
     }
 
