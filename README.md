@@ -7,10 +7,10 @@
 ![結果画像2](result2.gif)
 
 ## 自分なりにかっこいいシーン
-![結果画像](result.gif)
+![結果画像](Videotogif.gif)Videotogif
 
 # 自分なりに変更した点
--
+-timeノードを使っての動きを実装しました
 -
 -
 
